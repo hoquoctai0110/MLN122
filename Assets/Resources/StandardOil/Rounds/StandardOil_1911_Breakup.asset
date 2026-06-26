@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fc286b919ed0248974e6c2cb464b4e, type: 3}
+  m_Name: StandardOil_1911_Breakup
+  m_EditorClassIdentifier: 
+  roundId: standard_oil_1911_breakup
+  year: 1911
+  title: Breakup Order
+  speakerName: Supreme Court
+  story: "The Supreme Court orders Standard Oil dissolved into separate companies. The trust era ends, but shareholders still hold stakes in valuable successors. The last decision is how to respond to a forced breakup."
+  background: {fileID: 0}
+  characterPortrait: {fileID: 0}
+  choices:
+  - choiceId: 1911_orderly_breakup
+    text: Comply and manage an orderly breakup.
+    resultText: The empire splits into successor companies with less chaos and lasting shareholder value.
+    statChanges:
+      capital: 8
+      marketShare: -20
+      technology: 1
+      reputation: 7
+      investigationRisk: -12
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1911_delay
+    text: Delay and preserve control as long as possible.
+    resultText: Resistance holds pieces together briefly, but it worsens the company's reputation at the end.
+    statChanges:
+      capital: 4
+      marketShare: -12
+      technology: 0
+      reputation: -6
+      investigationRisk: 6
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1911_rebuild_successors
+    text: Focus on making the successor companies strong.
+    resultText: The monopoly ends, but the technical and managerial system continues inside the new companies.
+    statChanges:
+      capital: 12
+      marketShare: -18
+      technology: 5
+      reputation: 3
+      investigationRisk: -8
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}

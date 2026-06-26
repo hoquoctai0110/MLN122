@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fc286b919ed0248974e6c2cb464b4e, type: 3}
+  m_Name: StandardOil_1863_ClevelandRefinery
+  m_EditorClassIdentifier: 
+  roundId: standard_oil_1863_cleveland_refinery
+  year: 1863
+  title: Cleveland Refinery
+  speakerName: John D. Rockefeller
+  story: "\"H\xE0ng tr\u0103m c\xF4ng ty d\u1EA7u m\u1ECF nh\u1ECF \u0111ang c\u1EA1nh
+    tranh ngang s\u1EE9c nhau, kh\xF4ng ai v\u01B0\u1EE3t tr\u1ED9i. \u0110\xE2y
+    ch\xEDnh l\xE0 tr\u1EA1ng th\xE1i 'c\u1EA1nh tranh t\u1EF1 do' kinh \u0111i\u1EC3n.
+    \u0110\u1EC3 t\u1ED3n t\u1EA1i, b\u1EA1n s\u1EBD \u0111\u1EA7u t\u01B0 c\xF4ng
+    ngh\u1EC7 l\u1ECDc d\u1EA7u, gi\u1EA3m gi\xE1 \u0111\u1EC3 gi\xE0nh kh\xE1ch,
+    hay \u0111\u1EA9y m\u1EA1nh marketing x\xE2y d\u1EF1ng th\u01B0\u01A1ng hi\u1EC7u?"
+  background: {fileID: 0}
+  characterPortrait: {fileID: 0}
+  choices:
+  - choiceId: 1863_efficiency
+    text: "\u0110\u1EA7u t\u01B0 c\xF4ng ngh\u1EC7 l\u1ECDc d\u1EA7u"
+    resultText: 
+    statChanges:
+      capital: -15
+      marketShare: 2
+      technology: 2
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1863_expand_fast
+    text: "\u0110\u1EA9y m\u1EA1nh marketing"
+    resultText: 
+    statChanges:
+      capital: -5
+      marketShare: 5
+      technology: 0
+      reputation: -1
+      investigationRisk: 1
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1863_quality
+    text: "X\xE2y d\u1EF1ng th\u01B0\u01A1ng hi\u1EC7u"
+    resultText: 
+    statChanges:
+      capital: -10
+      marketShare: 1
+      technology: 0
+      reputation: 3
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}

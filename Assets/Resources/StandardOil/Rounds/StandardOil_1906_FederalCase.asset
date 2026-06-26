@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fc286b919ed0248974e6c2cb464b4e, type: 3}
+  m_Name: StandardOil_1906_FederalCase
+  m_EditorClassIdentifier: 
+  roundId: standard_oil_1906_federal_case
+  year: 1906
+  title: Federal Case
+  speakerName: Department of Justice
+  story: "B\u1EA1n \u0111ang ki\u1EC3m so\xE1t ph\u1EA7n l\u1EDBn th\u1ECB tr\u01B0\u1EDDng
+    d\u1EA7u m\u1ECF. Tuy nhi\xEAn, m\u1ED9t s\u1ED1 c\xF4ng ty m\u1EDBi xu\u1EA5t
+    hi\u1EC7n v\u1EDBi c\xF4ng ngh\u1EC7 kh\xE1c v\xE0 nh\u1EEFng th\u1ECB tr\u01B0\u1EDDng
+    m\u1EDBi. \u0110i\u1EC1u n\xE0y cho th\u1EA5y \u0111\u1ED9c quy\u1EC1n kh\xF4ng
+    lo\u1EA1i b\u1ECF ho\xE0n to\xE0n c\u1EA1nh tranh."
+  background: {fileID: 0}
+  characterPortrait: {fileID: 0}
+  choices:
+  - choiceId: 1906_fight
+    text: "Mua l\u1EA1i c\xE1c \u0111\u1ED1i th\u1EE7 m\u1EDBi n\u1ED5i"
+    resultText: 
+    statChanges:
+      capital: -10
+      marketShare: 5
+      technology: 0
+      reputation: 0
+      investigationRisk: 1
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1906_settle
+    text: "C\u1EA1nh tranh b\u1EB1ng \u0111\u1ED5i m\u1EDBi c\xF4ng ngh\u1EC7"
+    resultText: 
+    statChanges:
+      capital: 0
+      marketShare: 0
+      technology: 2
+      reputation: 1
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1906_public_relations
+    text: "B\u1ECF qua c\xE1c \u0111\u1ED1i th\u1EE7 nh\u1ECF"
+    resultText: 
+    statChanges:
+      capital: 0
+      marketShare: 0
+      technology: 0
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}

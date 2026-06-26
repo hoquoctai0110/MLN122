@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fc286b919ed0248974e6c2cb464b4e, type: 3}
+  m_Name: StandardOil_1885_GlobalMarkets
+  m_EditorClassIdentifier: 
+  roundId: standard_oil_1885_global_markets
+  year: 1885
+  title: Global Kerosene
+  speakerName: Export Office
+  story: "N\u0103m 1882, Standard Oil \u0111\xE3 s\u1EDF h\u1EEFu ho\u1EB7c ki\u1EC3m
+    so\xE1t r\u1EA5t nhi\u1EC1u c\xF4ng ty d\u1EA7u m\u1ECF. \u0110\u1EC3 \u0111i\u1EC1u
+    h\xE0nh hi\u1EC7u qu\u1EA3 h\u01A1n, Rockefeller c\xE2n nh\u1EAFc li\xEAn k\u1EBFt
+    c\xE1c c\xF4ng ty n\xE0y d\u01B0\u1EDBi m\u1ED9t h\u1EC7 th\u1ED1ng chung g\u1ECDi
+    l\xE0 Trust."
+  background: {fileID: 0}
+  characterPortrait: {fileID: 0}
+  choices:
+  - choiceId: 1885_export_scale
+    text: "Th\xE0nh l\u1EADp Trust \u0111\u1EC3 ki\u1EC3m so\xE1t to\xE0n b\u1ED9
+      h\u1EC7 th\u1ED1ng"
+    resultText: 
+    statChanges:
+      capital: 0
+      marketShare: 10
+      technology: 0
+      reputation: 0
+      investigationRisk: 1
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1885_quality_brand
+    text: "Gi\u1EEF c\xE1c c\xF4ng ty ho\u1EA1t \u0111\u1ED9ng ri\xEAng l\u1EBB"
+    resultText: 
+    statChanges:
+      capital: 0
+      marketShare: 2
+      technology: 0
+      reputation: 1
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1885_price_war
+    text: "B\xE1n b\u1EDBt c\xF4ng ty con"
+    resultText: 
+    statChanges:
+      capital: 15
+      marketShare: -8
+      technology: 0
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}

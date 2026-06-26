@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fc286b919ed0248974e6c2cb464b4e, type: 3}
+  m_Name: StandardOil_1870_Incorporation
+  m_EditorClassIdentifier: 
+  roundId: standard_oil_1870_incorporation
+  year: 1870
+  title: Standard Oil Company
+  speakerName: Board Room
+  story: "Th\u1ECB tr\u01B0\u1EDDng d\u1EA7u m\u1ECF ng\xE0y c\xE0ng c\u1EA1nh tranh
+    khi nhi\u1EC1u c\xF4ng ty li\xEAn t\u1EE5c gi\u1EA3m gi\xE1 \u0111\u1EC3 gi\xE0nh
+    kh\xE1ch h\xE0ng. Tr\u01B0\u1EDBc \xE1p l\u1EF1c t\u1EEB \u0111\u1ED1i th\u1EE7,
+    b\u1EA1n s\u1EBD l\u1EF1a ch\u1ECDn chi\u1EBFn l\u01B0\u1EE3c n\xE0o?"
+  background: {fileID: 0}
+  characterPortrait: {fileID: 0}
+  choices:
+  - choiceId: 1870_consolidate
+    text: "Gi\u1EA3m gi\xE1 nh\u1EDD c\xF4ng ngh\u1EC7 s\u1EA3n xu\u1EA5t hi\u1EC7u
+      qu\u1EA3 h\u01A1n"
+    resultText: 
+    statChanges:
+      capital: 5
+      marketShare: 6
+      technology: 1
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1870_invest_process
+    text: "Gi\u1EEF nguy\xEAn gi\xE1"
+    resultText: 
+    statChanges:
+      capital: -5
+      marketShare: -2
+      technology: 0
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1870_public_trust
+    text: "Gi\u1EA3m \u0111\u1EA7u t\u01B0 c\xF4ng ngh\u1EC7 \u0111\u1EC3 t\u0103ng
+      l\u1EE3i nhu\u1EADn ng\u1EAFn h\u1EA1n \r\nV\u1ED1n: +5\r\nC\xF4ng ngh\u1EC7
+      :  -1\r\nTh\u1ECB ph\u1EA7n: -5%"
+    resultText: 
+    statChanges:
+      capital: 5
+      marketShare: -5
+      technology: -1
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}

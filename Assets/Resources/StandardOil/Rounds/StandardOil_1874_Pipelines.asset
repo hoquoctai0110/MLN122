@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fc286b919ed0248974e6c2cb464b4e, type: 3}
+  m_Name: StandardOil_1874_Pipelines
+  m_EditorClassIdentifier: 
+  roundId: standard_oil_1874_pipelines
+  year: 1874
+  title: Pipelines and Storage
+  speakerName: Operations Desk
+  story: "Nhu c\u1EA7u d\u1EA7u h\u1ECFa t\u1EA1i M\u1EF9 \u0111ang t\u0103ng m\u1EA1nh.
+    Standard Oil \u0111\xE3 c\xF3 \u0111\u1EE7 ngu\u1ED3n l\u1EF1c \u0111\u1EC3 m\u1EDF
+    r\u1ED9ng s\u1EA3n xu\u1EA5t, nh\u01B0ng vi\u1EC7c \u0111\u1EA7u t\u01B0 l\u1EDBn
+    lu\xF4n \u0111i k\xE8m r\u1EE7i ro. B\u1EA1n s\u1EBD quy\u1EBFt \u0111\u1ECBnh
+    ra sao?"
+  background: {fileID: 0}
+  characterPortrait: {fileID: 0}
+  choices:
+  - choiceId: 1874_pipeline_network
+    text: "Gi\u1EEF nguy\xEAn quy m\xF4 hi\u1EC7n t\u1EA1i"
+    resultText: 
+    statChanges:
+      capital: 0
+      marketShare: -3
+      technology: 0
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1874_tank_cars
+    text: "T\xEDch t\u1EE5 t\u01B0 b\u1EA3n: X\xE2y th\xEAm nh\xE0 m\xE1y, hi\u1EC7n
+      \u0111\u1EA1i h\xF3a"
+    resultText: 
+    statChanges:
+      capital: -15
+      marketShare: 5
+      technology: 2
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1874_share_access
+    text: "\u0110\u1EA1i c\xF4ng nghi\u1EC7p: X\xE2y d\u1EF1ng chu\u1ED7i t\u1ED5
+      h\u1EE3p nh\xE0 m\xE1y kh\u1ED5ng l\u1ED3"
+    resultText: 
+    statChanges:
+      capital: -35
+      marketShare: 10
+      technology: 1
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}

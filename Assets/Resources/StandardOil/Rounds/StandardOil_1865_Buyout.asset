@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fc286b919ed0248974e6c2cb464b4e, type: 3}
+  m_Name: StandardOil_1865_Buyout
+  m_EditorClassIdentifier: 
+  roundId: standard_oil_1865_buyout
+  year: 1865
+  title: The Buyout
+  speakerName: John D. Rockefeller
+  story: "Nh\u1EDD nh\u1EEFng quy\u1EBFt \u0111\u1ECBnh ban \u0111\u1EA7u, Standard
+    Oil \u0111\xE3 b\u1EAFt \u0111\u1EA7u c\xF3 l\u1EE3i nhu\u1EADn. \u0110\xE2y
+    l\xE0 th\u1EDDi \u0111i\u1EC3m quan tr\u1ECDng: gi\u1EEF ti\u1EC1n, chia l\u1EE3i
+    nhu\u1EADn hay ti\u1EBFp t\u1EE5c \u0111\u1EA7u t\u01B0 \u0111\u1EC3 m\u1EDF
+    r\u1ED9ng s\u1EA3n xu\u1EA5t v\xE0 ph\xE1t tri\u1EC3n c\xF4ng ty. B\u1EA1n s\u1EBD
+    ch\u1ECDn c\xE1ch n\xE0o?"
+  background: {fileID: 0}
+  characterPortrait: {fileID: 0}
+  choices:
+  - choiceId: 1865_bid_high
+    text: "T\xE1i \u0111\u1EA7u t\u01B0 \u0111\u1EC3 m\u1EDF r\u1ED9ng s\u1EA3n xu\u1EA5t
+      & mua m\xE1y m\xF3c m\u1EDBi"
+    resultText: 
+    statChanges:
+      capital: -15
+      marketShare: 5
+      technology: 2
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1865_find_backers
+    text: "Gi\u1EEF ti\u1EC1n m\u1EB7t l\xE0m qu\u1EF9 d\u1EF1 ph\xF2ng "
+    resultText: 
+    statChanges:
+      capital: 5
+      marketShare: -1
+      technology: 0
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1865_wait
+    text: "Chia l\u1EE3i nhu\u1EADn cho c\u1ED5 \u0111\xF4ng "
+    resultText: 
+    statChanges:
+      capital: -10
+      marketShare: -3
+      technology: 0
+      reputation: 2
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}

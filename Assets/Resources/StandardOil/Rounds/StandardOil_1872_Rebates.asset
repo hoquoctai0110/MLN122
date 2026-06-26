@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fc286b919ed0248974e6c2cb464b4e, type: 3}
+  m_Name: StandardOil_1872_Rebates
+  m_EditorClassIdentifier: 
+  roundId: standard_oil_1872_rebates
+  year: 1872
+  title: Railroad Rebates
+  speakerName: Railroad Agent
+  story: "\u0110\u1EC3 ti\u1EBFp t\u1EE5c gi\u1EA3m gi\xE1 v\xE0 v\u01B0\u1EE3t qua
+    \u0111\u1ED1i th\u1EE7, Standard Oil c\u1EA7n c\u1EAFt gi\u1EA3m chi ph\xED v\u1EADn
+    chuy\u1EC3n. C\xE1c c\xF4ng ty \u0111\u01B0\u1EDDng s\u1EAFt \u0111\u1EC1 ngh\u1ECB
+    h\u1EE3p t\xE1c v\u1EDBi b\u1EA1n b\u1EB1ng nh\u1EEFng \u0111i\u1EC1u kho\u1EA3n
+    \u01B0u \u0111\xE3i. B\u1EA1n s\u1EBD x\u1EED l\xFD c\u01A1 h\u1ED9i n\xE0y nh\u01B0
+    th\u1EBF n\xE0o?"
+  background: {fileID: 0}
+  characterPortrait: {fileID: 0}
+  choices:
+  - choiceId: 1872_accept_secret_rebates
+    text: "T\u1EEB ch\u1ED1i h\u1EE3p t\xE1c"
+    resultText: 
+    statChanges:
+      capital: -10
+      marketShare: -3
+      technology: 0
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1872_negotiate_open_rates
+    text: "K\xFD h\u1EE3p \u0111\u1ED3ng \u0111\u1ED9c quy\u1EC1n, nh\u1EADn chi\u1EBFt
+      kh\u1EA5u ng\u1EA7m v\xE0 t\u0103ng c\u01B0\u1EDBc v\u1EADn chuy\u1EC3n c\u1EE7a
+      \u0111\u1ED1i th\u1EE7"
+    resultText: 
+    statChanges:
+      capital: 15
+      marketShare: 5
+      technology: 0
+      reputation: -1
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1872_build_shipping_alternatives
+    text: "Mua c\u1ED5 ph\u1EA7n l\u1EDBn trong c\xF4ng ty \u0111\u01B0\u1EDDng s\u1EAFt "
+    resultText: 
+    statChanges:
+      capital: -20
+      marketShare: 3
+      technology: 0
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}

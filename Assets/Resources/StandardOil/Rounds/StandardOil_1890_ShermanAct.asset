@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fc286b919ed0248974e6c2cb464b4e, type: 3}
+  m_Name: StandardOil_1890_ShermanAct
+  m_EditorClassIdentifier: 
+  roundId: standard_oil_1890_sherman_act
+  year: 1890
+  title: Sherman Antitrust Act
+  speakerName: Legal Counsel
+  story: "Nh\u1EDD t\xEDch t\u1EE5 v\xE0 t\u1EADp trung t\u01B0 b\u1EA3n k\xE9o d\xE0i
+    nhi\u1EC1u n\u0103m, Standard Oil hi\u1EC7n \u0111ang chi ph\u1ED1i ph\u1EA7n
+    l\u1EDBn ng\xE0nh d\u1EA7u m\u1ECF M\u1EF9. B\u1EA1n \u0111\u1EE9ng tr\u01B0\u1EDBc
+    l\u1EF1a ch\u1ECDn quan tr\u1ECDng: s\u1EED d\u1EE5ng s\u1EE9c m\u1EA1nh th\u1ECB
+    tr\u01B0\u1EDDng nh\u01B0 th\u1EBF n\xE0o?"
+  background: {fileID: 0}
+  characterPortrait: {fileID: 0}
+  choices:
+  - choiceId: 1890_reorganize
+    text: "\xC9p gi\xE1 \u0111\u1EC3 \u0111\u1ED1i th\u1EE7 kh\xF4ng th\u1EC3 c\u1EA1nh
+      tranh"
+    resultText: 
+    statChanges:
+      capital: 0
+      marketShare: 10
+      technology: 0
+      reputation: -2
+      investigationRisk: 2
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1890_lobby
+    text: "Duy tr\xEC gi\xE1 \u1ED5n \u0111\u1ECBnh"
+    resultText: 
+    statChanges:
+      capital: 0
+      marketShare: 3
+      technology: 0
+      reputation: 1
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}
+  - choiceId: 1890_ignore
+    text: "\u0110\u1EA7u t\u01B0 nghi\xEAn c\u1EE9u c\xF4ng ngh\u1EC7 m\u1EDBi"
+    resultText: 
+    statChanges:
+      capital: 0
+      marketShare: 4
+      technology: 2
+      reputation: 0
+      investigationRisk: 0
+    nextRound: {fileID: 0}
+    ending: {fileID: 0}

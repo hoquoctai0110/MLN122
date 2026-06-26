@@ -36,6 +36,10 @@ namespace MLN122.VisualNovel
         [Header("Runtime")]
         [SerializeField] private GameManager gameManager;
 
+        [Header("Home Screen")]
+        [SerializeField] private GameObject homePanel;
+        [SerializeField] private Button startButton;
+
         [Header("Scene")]
         [SerializeField] private Image backgroundImage;
         [SerializeField] private GameObject darkOverlay;
@@ -68,10 +72,11 @@ namespace MLN122.VisualNovel
         [SerializeField] private TMP_Text resultBodyText;
 
         [Header("Ending Screen")]
-        [SerializeField] private GameObject endingScreen;
-        [SerializeField] private TMP_Text endingTitleText;
-        [SerializeField] private TMP_Text endingBodyText;
-        [SerializeField] private Button restartButton;
+        [SerializeField] private GameObject endingPanel;
+        [SerializeField] private Image endingImage;
+        [SerializeField] private TMP_Text endingTitle;
+        [SerializeField] private TMP_Text endingDescription;
+        [SerializeField] private Button homeButton;
 
         private readonly CardState[] cardStates = new CardState[ChoiceCardCount];
         private Coroutine revealCoroutine;
@@ -94,6 +99,7 @@ namespace MLN122.VisualNovel
 
         private void Awake()
         {
+            EnsureHomeUI();
             EnsureChoiceCards();
             BindButtons();
         }
@@ -106,6 +112,8 @@ namespace MLN122.VisualNovel
             }
 
             EnsureChoiceCards();
+            EnsureHomeUI();
+            BindButtons();
 
             if (gameManager != null)
             {
@@ -113,24 +121,13 @@ namespace MLN122.VisualNovel
                 gameManager.EndingReached += ShowEnding;
                 gameManager.StatsChanged += ShowStats;
 
-                if (gameManager.CurrentEnding != null)
-                {
-                    ShowEnding(gameManager.CurrentEnding);
-                }
-                else if (gameManager.CurrentRound != null)
-                {
-                    ShowRound(gameManager.CurrentRound);
-                }
-                else
-                {
-                    ShowEmptyState();
-                }
-
+                gameManager.ResetToHome();
                 ShowStats(gameManager.CurrentStats);
+                ShowHome();
             }
             else
             {
-                ShowEmptyState();
+                ShowHome();
             }
         }
 
@@ -190,16 +187,28 @@ namespace MLN122.VisualNovel
             resultPopup = popup;
             resultTitleText = popupTitle;
             resultBodyText = popupBody;
-            endingScreen = ending;
-            endingTitleText = endingTitle;
-            endingBodyText = endingBody;
-            restartButton = restart;
+            endingPanel = ending;
+            this.endingTitle = endingTitle;
+            endingDescription = endingBody;
+            homeButton = restart;
 
             BindButtons();
         }
 
         private void BindButtons()
         {
+            if (startButton != null)
+            {
+                startButton.onClick.RemoveAllListeners();
+                startButton.onClick.AddListener(StartFromHome);
+            }
+
+            if (homeButton != null)
+            {
+                homeButton.onClick.RemoveAllListeners();
+                homeButton.onClick.AddListener(ReturnToHome);
+            }
+
             if (continueButton != null)
             {
                 continueButton.onClick.RemoveAllListeners();
@@ -208,24 +217,227 @@ namespace MLN122.VisualNovel
                 SetActive(continueButton.gameObject, false);
             }
 
-            if (restartButton != null)
+            EnsureEndingReferences();
+        }
+
+        private void ShowHome()
+        {
+            ResetChoiceRevealState();
+            SetActive(resultPopup, false);
+            SetActive(endingPanel, false);
+            SetActive(choiceRevealOverlay, false);
+            SetActive(darkOverlay, false);
+            HideContinueButton();
+            SetGameplayVisible(false);
+            SetActive(homePanel, true);
+            Debug.Log("ShowHome called");
+        }
+
+        private void StartFromHome()
+        {
+            Debug.Log("[VisualNovelUI] Start clicked.");
+            Debug.Log("StartGame called");
+            SetActive(homePanel, false);
+            SetGameplayVisible(true);
+            gameManager?.StartGame();
+        }
+
+        private void ReturnToHome()
+        {
+            Debug.Log("[VisualNovelUI] Return home clicked.");
+            ResetChoiceRevealState();
+            SetActive(endingPanel, false);
+            SetActive(resultPopup, false);
+            SetActive(choiceRevealOverlay, false);
+            HideContinueButton();
+
+            gameManager?.ResetToHome();
+            ShowHome();
+        }
+
+        private void EnsureHomeUI()
+        {
+            if (homePanel == null)
             {
-                restartButton.onClick.RemoveAllListeners();
-                restartButton.onClick.AddListener(RestartGame);
+                Transform existingHome = FindChildRecursive(transform, "HomePanel");
+                homePanel = existingHome == null ? null : existingHome.gameObject;
             }
+
+            if (startButton == null)
+            {
+                startButton = FindButton("StartButton", homePanel == null ? transform : homePanel.transform);
+            }
+
+            if (homePanel == null)
+            {
+                Debug.LogWarning("[VisualNovelUI] HomePanel is missing. Create a scene object named HomePanel under Visual Novel UI and assign it in the Inspector.");
+            }
+
+            if (startButton == null)
+            {
+                Debug.LogWarning("[VisualNovelUI] StartButton is missing. Create a Button named StartButton under HomePanel and assign it in the Inspector.");
+            }
+
+            EnsureEndingReferences();
+        }
+
+        private void EnsureEndingReferences()
+        {
+            if (endingPanel == null)
+            {
+                Transform existingEnding = FindChildRecursive(transform, "EndingPanel");
+                if (existingEnding == null)
+                {
+                    existingEnding = FindChildRecursive(transform, "Ending Screen");
+                }
+
+                endingPanel = existingEnding == null ? null : existingEnding.gameObject;
+            }
+
+            Transform endingRoot = endingPanel == null ? transform : endingPanel.transform;
+
+            if (endingImage == null)
+            {
+                Transform existingImage = FindChildRecursive(endingRoot, "EndingImage");
+                endingImage = existingImage == null ? null : existingImage.GetComponent<Image>();
+            }
+
+            if (endingTitle == null)
+            {
+                Transform existingTitle = FindChildRecursive(endingRoot, "EndingTitle");
+                if (existingTitle == null)
+                {
+                    existingTitle = FindChildRecursive(endingRoot, "Ending Title Text");
+                }
+
+                endingTitle = existingTitle == null ? null : existingTitle.GetComponent<TMP_Text>();
+            }
+
+            if (endingDescription == null)
+            {
+                Transform existingDescription = FindChildRecursive(endingRoot, "EndingDescription");
+                if (existingDescription == null)
+                {
+                    existingDescription = FindChildRecursive(endingRoot, "Ending Body Text");
+                }
+
+                endingDescription = existingDescription == null ? null : existingDescription.GetComponent<TMP_Text>();
+            }
+
+            if (homeButton == null)
+            {
+                Transform existingHomeButton = FindChildRecursive(endingRoot, "HomeButton");
+                if (existingHomeButton == null)
+                {
+                    existingHomeButton = FindChildRecursive(endingRoot, "EndingHomeButton");
+                }
+
+                if (existingHomeButton == null)
+                {
+                    existingHomeButton = FindChildRecursive(endingRoot, "Restart Button");
+                }
+
+                homeButton = existingHomeButton == null ? null : existingHomeButton.GetComponent<Button>();
+            }
+
+            if (endingPanel == null)
+            {
+                Debug.LogWarning("[VisualNovelUI] EndingPanel is missing. Create a scene object named EndingPanel under Visual Novel UI and assign it in the Inspector.");
+            }
+
+            if (endingTitle == null)
+            {
+                Debug.LogWarning("[VisualNovelUI] EndingTitle is missing. Assign the ending title TMP_Text in the Inspector.");
+            }
+
+            if (endingDescription == null)
+            {
+                Debug.LogWarning("[VisualNovelUI] EndingDescription is missing. Assign the ending description TMP_Text in the Inspector.");
+            }
+
+            if (homeButton == null)
+            {
+                Debug.LogWarning("[VisualNovelUI] HomeButton is missing. Assign the ending Home button in the Inspector.");
+            }
+        }
+
+        private void SetGameplayVisible(bool visible)
+        {
+            SetNamedChildActive("Header", visible);
+            SetNamedChildActive("Stats Panel", visible);
+            SetNamedChildActive("Rockefeller Portrait Frame", visible);
+            SetNamedChildActive("Story Paper Panel", visible);
+            SetNamedChildActive("Choice Card Row", visible);
+
+            SetActive(resultPopup, false);
+            SetActive(choiceRevealOverlay, false);
+            HideContinueButton();
+
+            for (int i = 0; i < choiceCards.Length; i++)
+            {
+                SetActive(choiceCards[i] == null ? null : choiceCards[i].gameObject, visible && choiceCards[i].gameObject.activeSelf);
+            }
+
+            if (!visible)
+            {
+                foreach (ChoiceCardUI choiceCard in choiceCards)
+                {
+                    choiceCard?.Clear();
+                }
+            }
+        }
+
+        private void SetNamedChildActive(string childName, bool active)
+        {
+            Transform child = FindChildRecursive(transform, childName);
+            if (child != null)
+            {
+                child.gameObject.SetActive(active);
+            }
+        }
+
+        private Button FindButton(string childName, Transform searchRoot)
+        {
+            Transform child = FindChildRecursive(searchRoot, childName);
+            return child == null ? null : child.GetComponent<Button>();
+        }
+
+        private static Transform FindChildRecursive(Transform searchRoot, string childName)
+        {
+            if (searchRoot == null)
+            {
+                return null;
+            }
+
+            Transform[] children = searchRoot.GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < children.Length; i++)
+            {
+                if (children[i].name == childName)
+                {
+                    return children[i];
+                }
+            }
+
+            return null;
         }
 
         private void ShowRound(GameRoundData round)
         {
             EnsureChoiceCards();
             ResetChoiceRevealState();
+            SetActive(homePanel, false);
+            SetGameplayVisible(true);
 
             SetActive(resultPopup, false);
-            SetActive(endingScreen, false);
+            SetActive(endingPanel, false);
             SetActive(darkOverlay, true);
 
             Debug.Log($"[VisualNovelUI] Round displayed: '{GetRoundTitle(round)}' with {round.Choices.Count} choices.");
             Debug.Log($"[VisualNovelUI] Next round started: '{GetRoundTitle(round)}'.");
+            if (gameManager != null && gameManager.CurrentRoundNumber == 1)
+            {
+                Debug.Log("Round 1 displayed");
+            }
 
             int currentRound = gameManager == null ? 0 : gameManager.CurrentRoundNumber;
             int totalRounds = gameManager == null ? 0 : gameManager.LoadedRoundCount;
@@ -271,22 +483,31 @@ namespace MLN122.VisualNovel
         private void ShowEnding(EndingData ending)
         {
             ResetChoiceRevealState();
+            SetActive(homePanel, false);
+            SetGameplayVisible(false);
             SetActive(resultPopup, false);
-            SetActive(endingScreen, true);
+            SetActive(endingPanel, true);
             SetActive(darkOverlay, true);
+            SetActive(homeButton == null ? null : homeButton.gameObject, true);
 
+            Debug.Log("[VisualNovelUI] Ending shown.");
             SetText(progressText, "K\u1ebeT TH\u00daC");
             SetText(yearText, string.Empty);
             SetText(titleText, ending == null || string.IsNullOrWhiteSpace(ending.Title) ? "Ending" : ending.Title);
-            SetText(endingTitleText, ending == null || string.IsNullOrWhiteSpace(ending.Title) ? "Ending" : ending.Title);
-            SetText(endingBodyText, ending == null || string.IsNullOrWhiteSpace(ending.Description) ? "The Standard Oil timeline has ended." : ending.Description);
+            SetText(endingTitle, ending == null || string.IsNullOrWhiteSpace(ending.Title) ? "Ending" : ending.Title);
+            SetText(endingDescription, ending == null || string.IsNullOrWhiteSpace(ending.Description) ? "The Standard Oil timeline has ended." : ending.Description);
+
+            if (ending != null && ending.Illustration != null && endingImage != null)
+            {
+                endingImage.sprite = ending.Illustration;
+            }
         }
 
         private void ShowEmptyState()
         {
             ResetChoiceRevealState();
             SetActive(resultPopup, false);
-            SetActive(endingScreen, false);
+            SetActive(endingPanel, false);
             SetActive(darkOverlay, true);
 
             SetText(progressText, "V\u00d2NG 0/0");
@@ -333,9 +554,7 @@ namespace MLN122.VisualNovel
 
         private void RestartGame()
         {
-            ResetChoiceRevealState();
-            SetActive(endingScreen, false);
-            gameManager?.Restart();
+            ReturnToHome();
         }
 
         private IEnumerator PlayChoiceReveal(int selectedIndex, ChoiceData selectedChoice)
@@ -688,6 +907,14 @@ namespace MLN122.VisualNovel
             {
                 target.SetActive(active);
             }
+        }
+
+        private static void Stretch(RectTransform rectTransform, Vector2 anchorMin, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax)
+        {
+            rectTransform.anchorMin = anchorMin;
+            rectTransform.anchorMax = anchorMax;
+            rectTransform.offsetMin = offsetMin;
+            rectTransform.offsetMax = offsetMax;
         }
     }
 }

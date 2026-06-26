@@ -12,14 +12,14 @@ namespace MLN122.VisualNovel
         private const int StartingTechnology = 1;
         private const int StartingReputation = 1;
         private const int StartingInvestigationRisk = 0;
+        private const string FinalJudgementRoundId = "standard_oil_1911_breakup";
 
         [SerializeField] private GameRoundData startingRound;
         [SerializeField] private bool autoLoadRounds = true;
         [SerializeField] private string roundsResourcePath = "StandardOil/Rounds";
-        [SerializeField] private EndingData completionEnding;
-        [SerializeField] private string completionEndingResourcePath = "StandardOil/Endings/StandardOil_Completion";
-        [SerializeField] private bool startOnAwake = true;
-
+        [SerializeField] private EndingData rockefellerNewEnding;
+        [SerializeField] private EndingData empireTooBigEnding;
+        [SerializeField] private EndingData victimOfCompetitionEnding;
         public event Action<GameRoundData> RoundChanged;
         public event Action<EndingData> EndingReached;
         public event Action<StatBlockData> StatsChanged;
@@ -37,11 +37,6 @@ namespace MLN122.VisualNovel
         private void Awake()
         {
             LoadConfiguredData();
-
-            if (startOnAwake)
-            {
-                StartGame();
-            }
         }
 
         public void StartGame()
@@ -57,6 +52,16 @@ namespace MLN122.VisualNovel
         public void Restart()
         {
             StartGame();
+        }
+
+        public void ResetToHome()
+        {
+            CurrentStats = CreateStartingStats();
+            CurrentRound = null;
+            CurrentEnding = null;
+            currentRoundIndex = -1;
+            StatsChanged?.Invoke(CurrentStats);
+            Debug.Log("[GameManager] Game reset.");
         }
 
         public void SelectChoice(int choiceIndex)
@@ -140,10 +145,9 @@ namespace MLN122.VisualNovel
                     .ThenBy(round => round.name));
             }
 
-            if (completionEnding == null && !string.IsNullOrWhiteSpace(completionEndingResourcePath))
-            {
-                completionEnding = Resources.Load<EndingData>(completionEndingResourcePath);
-            }
+            rockefellerNewEnding ??= Resources.Load<EndingData>("StandardOil/Endings/Rockefeller_New");
+            empireTooBigEnding ??= Resources.Load<EndingData>("StandardOil/Endings/Empire_Too_Big");
+            victimOfCompetitionEnding ??= Resources.Load<EndingData>("StandardOil/Endings/Victim_Of_Competition");
         }
 
         private void ApplyStatChanges(ChoiceData choice)
@@ -173,19 +177,41 @@ namespace MLN122.VisualNovel
             int nextIndex = currentRoundIndex + 1;
             if (nextIndex >= 0 && nextIndex < loadedRounds.Count)
             {
-                SetRound(loadedRounds[nextIndex]);
+                GameRoundData nextRound = loadedRounds[nextIndex];
+                if (IsFinalJudgementRound(nextRound))
+                {
+                    ReachEnding(SelectFinalJudgementEnding());
+                    return;
+                }
+
+                SetRound(nextRound);
                 return;
             }
 
-            if (completionEnding != null)
+            ReachEnding(SelectFinalJudgementEnding());
+        }
+
+        private static bool IsFinalJudgementRound(GameRoundData round)
+        {
+            return round != null
+                && round.Year == 1911
+                && round.RoundId == FinalJudgementRoundId
+                && !round.HasChoices;
+        }
+
+        private EndingData SelectFinalJudgementEnding()
+        {
+            if (CurrentStats.Capital <= 0 || CurrentStats.MarketShare < 50)
             {
-                ReachEnding(completionEnding);
-                return;
+                return victimOfCompetitionEnding;
             }
 
-            CurrentRound = null;
-            CurrentEnding = null;
-            Debug.LogWarning("All loaded rounds have been played, but no completion ending is assigned.");
+            if (CurrentStats.MarketShare >= 80)
+            {
+                return empireTooBigEnding;
+            }
+
+            return rockefellerNewEnding;
         }
     }
 }

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a643d95fc510dc34aa6dd6675866d189, type: 3}
-  m_Name: StandardOil_Completion
+  m_Name: Empire_Too_Big
   m_EditorClassIdentifier: 
-  endingId: standard_oil_completion
-  title: Standard Oil Timeline Complete
-  description: "The Standard Oil story ends with the 1911 breakup. Your choices shaped the balance between capital, market share, technology, reputation, and investigation risk across the rise and dissolution of the trust."
-  illustration: {fileID: 0}
+  endingId: empire_too_big
+  title: "\u0110\u1EBE CH\u1EBE QU\xC1 L\u1EDAN"
+  description: 
+  illustration: {fileID: 21300000, guid: 43290c4f7291ef344a6f1280145310bd, type: 3}

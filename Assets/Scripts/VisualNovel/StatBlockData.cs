@@ -43,6 +43,8 @@ namespace MLN122.VisualNovel
             technology += other.technology;
             reputation += other.reputation;
             investigationRisk += other.investigationRisk;
+
+            ClampValues();
         }
 
         public string ToDisplayString()
@@ -58,6 +60,15 @@ namespace MLN122.VisualNovel
         private static string FormatChange(int value)
         {
             return value > 0 ? $"+{value}" : value.ToString();
+        }
+
+        private void ClampValues()
+        {
+            capital = Mathf.Max(0, capital);
+            marketShare = Mathf.Clamp(marketShare, 0, 100);
+            technology = Mathf.Max(0, technology);
+            reputation = Mathf.Max(0, reputation);
+            investigationRisk = Mathf.Max(0, investigationRisk);
         }
     }
 }

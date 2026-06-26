@@ -14,42 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roundId: standard_oil_1911_breakup
   year: 1911
-  title: Breakup Order
-  speakerName: Supreme Court
-  story: "The Supreme Court orders Standard Oil dissolved into separate companies. The trust era ends, but shareholders still hold stakes in valuable successors. The last decision is how to respond to a forced breakup."
+  title: "PHI\xCAN T\xD2A N\u0102M 1911"
+  speakerName: "T\xF2a \xE1n T\u1ED1i cao Hoa K\u1EF3"
+  story: "N\u0103m 1911, sau h\u01A1n 40 n\u0103m t\xEDch t\u1EE5 v\xE0 t\u1EADp trung t\u01B0 b\u1EA3n, Standard Oil b\u01B0\u1EDBc v\xE0o th\u1EDDi kh\u1EAFc quy\u1EBFt \u0111\u1ECBnh. C\xF4ng ch\xFAng v\xE0 ch\xEDnh ph\u1EE7 cho r\u1EB1ng c\xF4ng ty \u0111\xE3 l\u1EA1m d\u1EE5ng v\u1ECB th\u1EBF \u0111\u1ED9c quy\u1EC1n. T\xF2a \xE1n T\u1ED1i cao Hoa K\u1EF3 \u0111\u01B0a ra ph\xE1n quy\u1EBFt cu\u1ED1i c\xF9ng d\u1EF1a tr\xEAn quy m\xF4 th\u1ECB tr\u01B0\u1EDDng, s\u1EE9c m\u1EA1nh t\u01B0 b\u1EA3n v\xE0 m\u1EE9c \u0111\u1ED9 r\u1EE7i ro \u0111i\u1EC1u tra m\xE0 b\u1EA1n \u0111\xE3 t\u1EA1o ra."
   background: {fileID: 0}
   characterPortrait: {fileID: 0}
-  choices:
-  - choiceId: 1911_orderly_breakup
-    text: Comply and manage an orderly breakup.
-    resultText: The empire splits into successor companies with less chaos and lasting shareholder value.
-    statChanges:
-      capital: 8
-      marketShare: -20
-      technology: 1
-      reputation: 7
-      investigationRisk: -12
-    nextRound: {fileID: 0}
-    ending: {fileID: 0}
-  - choiceId: 1911_delay
-    text: Delay and preserve control as long as possible.
-    resultText: Resistance holds pieces together briefly, but it worsens the company's reputation at the end.
-    statChanges:
-      capital: 4
-      marketShare: -12
-      technology: 0
-      reputation: -6
-      investigationRisk: 6
-    nextRound: {fileID: 0}
-    ending: {fileID: 0}
-  - choiceId: 1911_rebuild_successors
-    text: Focus on making the successor companies strong.
-    resultText: The monopoly ends, but the technical and managerial system continues inside the new companies.
-    statChanges:
-      capital: 12
-      marketShare: -18
-      technology: 5
-      reputation: 3
-      investigationRisk: -8
-    nextRound: {fileID: 0}
-    ending: {fileID: 0}
+  choices: []

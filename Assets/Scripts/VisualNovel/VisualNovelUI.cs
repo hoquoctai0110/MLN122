@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -58,6 +59,8 @@ namespace MLN122.VisualNovel
 
         [Header("Choices")]
         [SerializeField] private ChoiceCardUI[] choiceCards = new ChoiceCardUI[ChoiceCardCount];
+        [SerializeField] private GameObject choiceRevealOverlay;
+        [SerializeField] private Button continueButton;
 
         [Header("Result Popup")]
         [SerializeField] private GameObject resultPopup;
@@ -69,6 +72,25 @@ namespace MLN122.VisualNovel
         [SerializeField] private TMP_Text endingTitleText;
         [SerializeField] private TMP_Text endingBodyText;
         [SerializeField] private Button restartButton;
+
+        private readonly CardState[] cardStates = new CardState[ChoiceCardCount];
+        private Coroutine revealCoroutine;
+        private int pendingChoiceIndex = -1;
+        private bool isChoiceRevealActive;
+
+        private sealed class CardState
+        {
+            public Transform Parent;
+            public int SiblingIndex;
+            public Vector2 AnchorMin;
+            public Vector2 AnchorMax;
+            public Vector2 Pivot;
+            public Vector2 AnchoredPosition;
+            public Vector2 SizeDelta;
+            public Vector3 LocalScale;
+            public Quaternion LocalRotation;
+            public bool IgnoreLayout;
+        }
 
         private void Awake()
         {
@@ -138,6 +160,8 @@ namespace MLN122.VisualNovel
             TMP_Text dialogue,
             Image portrait,
             ChoiceCardUI[] cards,
+            GameObject revealOverlay,
+            Button revealContinueButton,
             GameObject popup,
             TMP_Text popupTitle,
             TMP_Text popupBody,
@@ -161,6 +185,8 @@ namespace MLN122.VisualNovel
             dialogueText = dialogue;
             portraitImage = portrait;
             choiceCards = NormalizeChoiceCards(cards);
+            choiceRevealOverlay = revealOverlay;
+            continueButton = revealContinueButton;
             resultPopup = popup;
             resultTitleText = popupTitle;
             resultBodyText = popupBody;
@@ -174,6 +200,14 @@ namespace MLN122.VisualNovel
 
         private void BindButtons()
         {
+            if (continueButton != null)
+            {
+                continueButton.onClick.RemoveAllListeners();
+                continueButton.onClick.AddListener(ContinueAfterChoiceReveal);
+                continueButton.interactable = false;
+                SetActive(continueButton.gameObject, false);
+            }
+
             if (restartButton != null)
             {
                 restartButton.onClick.RemoveAllListeners();
@@ -184,12 +218,14 @@ namespace MLN122.VisualNovel
         private void ShowRound(GameRoundData round)
         {
             EnsureChoiceCards();
+            ResetChoiceRevealState();
 
             SetActive(resultPopup, false);
             SetActive(endingScreen, false);
             SetActive(darkOverlay, true);
 
-            Debug.Log($"[VisualNovelUI] Showing round '{GetRoundTitle(round)}' with {round.Choices.Count} choices.");
+            Debug.Log($"[VisualNovelUI] Round displayed: '{GetRoundTitle(round)}' with {round.Choices.Count} choices.");
+            Debug.Log($"[VisualNovelUI] Next round started: '{GetRoundTitle(round)}'.");
 
             int currentRound = gameManager == null ? 0 : gameManager.CurrentRoundNumber;
             int totalRounds = gameManager == null ? 0 : gameManager.LoadedRoundCount;
@@ -234,6 +270,7 @@ namespace MLN122.VisualNovel
 
         private void ShowEnding(EndingData ending)
         {
+            ResetChoiceRevealState();
             SetActive(resultPopup, false);
             SetActive(endingScreen, true);
             SetActive(darkOverlay, true);
@@ -247,6 +284,7 @@ namespace MLN122.VisualNovel
 
         private void ShowEmptyState()
         {
+            ResetChoiceRevealState();
             SetActive(resultPopup, false);
             SetActive(endingScreen, false);
             SetActive(darkOverlay, true);
@@ -266,27 +304,157 @@ namespace MLN122.VisualNovel
 
         private void SelectChoice(int choiceIndex)
         {
-            if (gameManager == null || gameManager.CurrentRound == null || choiceIndex >= gameManager.CurrentRound.Choices.Count)
+            if (isChoiceRevealActive || gameManager == null || gameManager.CurrentRound == null || choiceIndex >= gameManager.CurrentRound.Choices.Count)
             {
                 return;
             }
 
             ChoiceData choice = gameManager.CurrentRound.Choices[choiceIndex];
-            gameManager.SelectChoice(choiceIndex);
+            pendingChoiceIndex = choiceIndex;
+            isChoiceRevealActive = true;
 
-            if (gameManager.CurrentEnding == null)
+            Debug.Log($"[VisualNovelUI] Choice clicked: '{GetChoiceTitle(choice, choiceIndex)}'.");
+            Debug.Log($"[VisualNovelUI] Selected card index: {choiceIndex}.");
+
+            for (int i = 0; i < choiceCards.Length; i++)
             {
-                SetActive(resultPopup, true);
-                SetText(resultTitleText, "Quy\u1ebft \u0111\u1ecbnh \u0111\u00e3 ch\u1ecdn");
-                string resultText = string.IsNullOrWhiteSpace(choice.ResultText) ? choice.Text : choice.ResultText;
-                SetText(resultBodyText, $"{resultText}\n\n{choice.StatChanges.ToChangeDisplayString()}");
+                choiceCards[i]?.SetInteractable(false);
             }
+
+            SetActive(resultPopup, false);
+
+            if (revealCoroutine != null)
+            {
+                StopCoroutine(revealCoroutine);
+            }
+
+            revealCoroutine = StartCoroutine(PlayChoiceReveal(choiceIndex, choice));
         }
 
         private void RestartGame()
         {
+            ResetChoiceRevealState();
             SetActive(endingScreen, false);
             gameManager?.Restart();
+        }
+
+        private IEnumerator PlayChoiceReveal(int selectedIndex, ChoiceData selectedChoice)
+        {
+            CacheCardStates();
+            SetActive(choiceRevealOverlay, true);
+            SetActive(continueButton == null ? null : continueButton.gameObject, false);
+
+            ChoiceCardUI selectedCard = choiceCards[selectedIndex];
+            RectTransform selectedRect = selectedCard.RectTransform;
+            LayoutElement selectedLayout = selectedCard.LayoutElement;
+            if (selectedLayout != null)
+            {
+                selectedLayout.ignoreLayout = true;
+            }
+
+            Vector3 selectedWorldPosition = selectedRect.position;
+            Vector2 selectedSize = selectedRect.rect.size;
+            selectedRect.SetParent(transform, true);
+            selectedRect.position = selectedWorldPosition;
+            selectedRect.anchorMin = new Vector2(0.5f, 0.5f);
+            selectedRect.anchorMax = new Vector2(0.5f, 0.5f);
+            selectedRect.pivot = new Vector2(0.5f, 0.5f);
+            selectedRect.sizeDelta = selectedSize;
+            selectedRect.SetAsLastSibling();
+
+            BringContinueButtonToFront();
+
+            Vector2 startPosition = selectedRect.anchoredPosition;
+            Vector2 endPosition = Vector2.zero;
+            Vector2 startSize = selectedRect.sizeDelta;
+            Vector2 endSize = selectedCard.ResultRevealSize;
+            Vector3 startScale = selectedRect.localScale;
+            Vector3 endScale = Vector3.one * 1.1f;
+
+            float elapsed = 0f;
+            const float fadeDuration = 0.25f;
+            while (elapsed < fadeDuration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float t = Mathf.Clamp01(elapsed / fadeDuration);
+                for (int i = 0; i < choiceCards.Length; i++)
+                {
+                    if (i != selectedIndex)
+                    {
+                        choiceCards[i]?.SetAlpha(1f - t);
+                    }
+                }
+
+                yield return null;
+            }
+
+            for (int i = 0; i < choiceCards.Length; i++)
+            {
+                if (i != selectedIndex)
+                {
+                    SetActive(choiceCards[i] == null ? null : choiceCards[i].gameObject, false);
+                }
+            }
+
+            elapsed = 0f;
+            const float moveDuration = 0.35f;
+            while (elapsed < moveDuration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float t = SmoothStep(Mathf.Clamp01(elapsed / moveDuration));
+                selectedRect.anchoredPosition = Vector2.Lerp(startPosition, endPosition, t);
+                selectedRect.sizeDelta = Vector2.Lerp(startSize, endSize, t);
+                selectedRect.localScale = Vector3.Lerp(startScale, endScale, t);
+                yield return null;
+            }
+
+            selectedRect.anchoredPosition = endPosition;
+            selectedRect.sizeDelta = endSize;
+            selectedRect.localScale = endScale;
+
+            elapsed = 0f;
+            const float halfFlipDuration = 0.18f;
+            while (elapsed < halfFlipDuration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float t = Mathf.Clamp01(elapsed / halfFlipDuration);
+                selectedRect.localScale = new Vector3(Mathf.Lerp(endScale.x, 0f, t), endScale.y, endScale.z);
+                yield return null;
+            }
+
+            selectedCard.ShowResult(selectedChoice);
+
+            elapsed = 0f;
+            while (elapsed < halfFlipDuration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float t = Mathf.Clamp01(elapsed / halfFlipDuration);
+                selectedRect.localScale = new Vector3(Mathf.Lerp(0f, endScale.x, t), endScale.y, endScale.z);
+                yield return null;
+            }
+
+            selectedRect.localScale = endScale;
+            Debug.Log("[VisualNovelUI] Reveal animation finished.");
+            ShowContinueButton();
+            revealCoroutine = null;
+        }
+
+        private void ContinueAfterChoiceReveal()
+        {
+            Debug.Log("[VisualNovelUI] ContinueButton clicked.");
+
+            if (!isChoiceRevealActive || gameManager == null || gameManager.CurrentRound == null || pendingChoiceIndex < 0)
+            {
+                return;
+            }
+
+            int choiceIndex = pendingChoiceIndex;
+            pendingChoiceIndex = -1;
+            isChoiceRevealActive = false;
+            HideContinueButton();
+
+            Debug.Log($"[VisualNovelUI] Stat changes applied for choice index {choiceIndex}.");
+            gameManager.SelectChoice(choiceIndex);
         }
 
         private void ShowStats(StatBlockData stats)
@@ -334,6 +502,120 @@ namespace MLN122.VisualNovel
 
             ChoiceCardUI[] discoveredCards = GetComponentsInChildren<ChoiceCardUI>(true);
             choiceCards = NormalizeChoiceCards(discoveredCards);
+        }
+
+        private void CacheCardStates()
+        {
+            for (int i = 0; i < ChoiceCardCount; i++)
+            {
+                ChoiceCardUI card = choiceCards[i];
+                RectTransform rect = card == null ? null : card.RectTransform;
+                if (rect == null)
+                {
+                    cardStates[i] = null;
+                    continue;
+                }
+
+                LayoutElement layout = card.LayoutElement;
+                cardStates[i] = new CardState
+                {
+                    Parent = rect.parent,
+                    SiblingIndex = rect.GetSiblingIndex(),
+                    AnchorMin = rect.anchorMin,
+                    AnchorMax = rect.anchorMax,
+                    Pivot = rect.pivot,
+                    AnchoredPosition = rect.anchoredPosition,
+                    SizeDelta = rect.sizeDelta,
+                    LocalScale = rect.localScale,
+                    LocalRotation = rect.localRotation,
+                    IgnoreLayout = layout != null && layout.ignoreLayout
+                };
+            }
+        }
+
+        private void ResetChoiceRevealState()
+        {
+            if (revealCoroutine != null)
+            {
+                StopCoroutine(revealCoroutine);
+                revealCoroutine = null;
+            }
+
+            SetActive(choiceRevealOverlay, false);
+            HideContinueButton();
+            pendingChoiceIndex = -1;
+            isChoiceRevealActive = false;
+
+            for (int i = 0; i < ChoiceCardCount; i++)
+            {
+                ChoiceCardUI card = choiceCards[i];
+                RectTransform rect = card == null ? null : card.RectTransform;
+                CardState state = cardStates[i];
+                if (rect != null && state != null)
+                {
+                    rect.SetParent(state.Parent, false);
+                    rect.SetSiblingIndex(state.SiblingIndex);
+                    rect.anchorMin = state.AnchorMin;
+                    rect.anchorMax = state.AnchorMax;
+                    rect.pivot = state.Pivot;
+                    rect.anchoredPosition = state.AnchoredPosition;
+                    rect.sizeDelta = state.SizeDelta;
+                    rect.localScale = state.LocalScale;
+                    rect.localRotation = state.LocalRotation;
+
+                    LayoutElement layout = card.LayoutElement;
+                    if (layout != null)
+                    {
+                        layout.ignoreLayout = state.IgnoreLayout;
+                    }
+                }
+
+                if (card != null)
+                {
+                    card.SetAlpha(1f);
+                    card.ShowFront();
+                }
+
+                cardStates[i] = null;
+            }
+        }
+
+        private static float SmoothStep(float value)
+        {
+            return value * value * (3f - 2f * value);
+        }
+
+        private void ShowContinueButton()
+        {
+            if (continueButton == null)
+            {
+                Debug.LogWarning("[VisualNovelUI] Cannot show ContinueButton because no button is assigned.");
+                return;
+            }
+
+            BringContinueButtonToFront();
+            continueButton.interactable = true;
+            SetActive(continueButton.gameObject, true);
+            Debug.Log("[VisualNovelUI] ContinueButton shown.");
+        }
+
+        private void HideContinueButton()
+        {
+            if (continueButton == null)
+            {
+                return;
+            }
+
+            continueButton.interactable = false;
+            SetActive(continueButton.gameObject, false);
+        }
+
+        private void BringContinueButtonToFront()
+        {
+            if (continueButton != null)
+            {
+                continueButton.transform.SetAsLastSibling();
+            }
         }
 
         private static ChoiceCardUI[] NormalizeChoiceCards(ChoiceCardUI[] cards)

@@ -150,6 +150,19 @@ namespace MLN122.VisualNovelEditor
                 choiceCards[i] = CreateChoiceCard(cardRow.transform, i + 1);
             }
 
+            Image choiceRevealOverlay = CreateImage("Choice Reveal Dim Overlay", root.transform, new Color(0f, 0f, 0f, 0.62f));
+            Stretch(choiceRevealOverlay.rectTransform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            choiceRevealOverlay.raycastTarget = true;
+            choiceRevealOverlay.gameObject.SetActive(false);
+
+            Button continueButton = CreateButton("Continue Button", root.transform, "Ti\u1ebfp t\u1ee5c");
+            Stretch(continueButton.GetComponent<RectTransform>(), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(-180f, 54f), new Vector2(180f, 132f));
+            Canvas continueCanvas = continueButton.gameObject.AddComponent<Canvas>();
+            continueCanvas.overrideSorting = true;
+            continueCanvas.sortingOrder = 40;
+            continueButton.gameObject.AddComponent<GraphicRaycaster>();
+            continueButton.gameObject.SetActive(false);
+
             Image resultPopup = CreateBorderedPanel("Result Popup", root.transform, new Color(0.08f, 0.075f, 0.06f, 0.97f));
             Stretch(resultPopup.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-360f, -138f), new Vector2(360f, 138f));
 
@@ -192,6 +205,8 @@ namespace MLN122.VisualNovelEditor
                 dialogueText,
                 portraitImage,
                 choiceCards,
+                choiceRevealOverlay.gameObject,
+                continueButton,
                 resultPopup.gameObject,
                 resultTitle,
                 resultBody,
@@ -206,9 +221,10 @@ namespace MLN122.VisualNovelEditor
 
         private static ChoiceCardUI CreateChoiceCard(Transform parent, int number)
         {
-            Image cardImage = CreateBorderedPanel($"Choice Card {number}", parent, new Color(0.12f, 0.095f, 0.06f, 0.98f));
-            Button button = cardImage.gameObject.AddComponent<Button>();
-            button.targetGraphic = cardImage;
+            Image cardHitArea = CreateImage($"Choice Card {number}", parent, new Color(1f, 1f, 1f, 0f));
+            cardHitArea.raycastTarget = true;
+            CanvasGroup canvasGroup = cardHitArea.gameObject.AddComponent<CanvasGroup>();
+            Button button = cardHitArea.gameObject.AddComponent<Button>();
             ColorBlock colors = button.colors;
             colors.normalColor = Color.white;
             colors.highlightedColor = new Color(1f, 0.9f, 0.62f, 1f);
@@ -217,16 +233,21 @@ namespace MLN122.VisualNovelEditor
             colors.colorMultiplier = 1f;
             button.colors = colors;
 
-            AddLayout(cardImage.gameObject, 360f, 360f, 1f);
+            AddLayout(cardHitArea.gameObject, 360f, 360f, 1f);
 
-            VerticalLayoutGroup cardLayout = cardImage.gameObject.AddComponent<VerticalLayoutGroup>();
-            cardLayout.padding = new RectOffset(18, 18, 18, 18);
-            cardLayout.spacing = 9f;
-            cardLayout.childAlignment = TextAnchor.UpperCenter;
-            cardLayout.childControlWidth = true;
-            cardLayout.childControlHeight = false;
+            GameObject frontPanel = CreateObject("FrontPanel", cardHitArea.transform);
+            Stretch(frontPanel.GetComponent<RectTransform>(), Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            VerticalLayoutGroup frontLayout = frontPanel.AddComponent<VerticalLayoutGroup>();
+            frontLayout.padding = new RectOffset(18, 18, 18, 18);
+            frontLayout.spacing = 9f;
+            frontLayout.childAlignment = TextAnchor.UpperCenter;
+            frontLayout.childControlWidth = true;
+            frontLayout.childControlHeight = false;
 
-            GameObject topRow = CreateObject("Card Top Row", cardImage.transform);
+            Image frontBackground = CreatePanelBackground("FrontBackground", frontPanel.transform, new Color(0.12f, 0.095f, 0.06f, 0.98f));
+            button.targetGraphic = frontBackground;
+
+            GameObject topRow = CreateObject("Card Top Row", frontPanel.transform);
             AddLayout(topRow, 0f, 82f, 1f);
 
             Image illustration = CreateImage("Illustration", topRow.transform, new Color(0.24f, 0.19f, 0.13f, 1f));
@@ -239,20 +260,40 @@ namespace MLN122.VisualNovelEditor
             TMP_Text numberText = CreateText("Number Text", badge.transform, number.ToString(), 26, FontStyles.Bold, TextAlignmentOptions.Center, Gold);
             Stretch(numberText.rectTransform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
 
-            TMP_Text titleText = CreateText("Card Title Text", cardImage.transform, $"Choice {number}", 29, FontStyles.Bold, TextAlignmentOptions.TopLeft, new Color(0.95f, 0.86f, 0.62f, 1f));
+            TMP_Text titleText = CreateText("Card Title Text", frontPanel.transform, $"Choice {number}", 29, FontStyles.Bold, TextAlignmentOptions.TopLeft, new Color(0.95f, 0.86f, 0.62f, 1f));
             titleText.enableAutoSizing = true;
             titleText.fontSizeMin = 23f;
             titleText.fontSizeMax = 29f;
             titleText.textWrappingMode = TextWrappingModes.Normal;
             titleText.overflowMode = TextOverflowModes.Ellipsis;
-            AddLayout(titleText.gameObject, 0f, 52f, 1f);
+            AddLayout(titleText.gameObject, 0f, 76f, 1f);
 
-            TMP_Text descriptionText = CreateText("Card Description Text", cardImage.transform, string.Empty, 21, FontStyles.Normal, TextAlignmentOptions.TopLeft, new Color(0.83f, 0.77f, 0.65f, 1f));
+            TMP_Text descriptionText = CreateText("Card Description Text", frontPanel.transform, string.Empty, 21, FontStyles.Normal, TextAlignmentOptions.TopLeft, new Color(0.83f, 0.77f, 0.65f, 1f));
             descriptionText.textWrappingMode = TextWrappingModes.Normal;
             descriptionText.overflowMode = TextOverflowModes.Ellipsis;
-            AddLayout(descriptionText.gameObject, 0f, 26f, 1f);
+            AddLayout(descriptionText.gameObject, 0f, 130f, 1f);
 
-            Image statsBox = CreateImage("Stat Changes Box", cardImage.transform, new Color(0.055f, 0.06f, 0.058f, 0.92f));
+            GameObject resultPanel = CreateObject("ResultPanel", cardHitArea.transform);
+            Stretch(resultPanel.GetComponent<RectTransform>(), Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            VerticalLayoutGroup resultLayout = resultPanel.AddComponent<VerticalLayoutGroup>();
+            resultLayout.padding = new RectOffset(28, 28, 28, 28);
+            resultLayout.spacing = 10f;
+            resultLayout.childAlignment = TextAnchor.UpperCenter;
+            resultLayout.childControlWidth = true;
+            resultLayout.childControlHeight = false;
+
+            Image resultBackground = CreatePanelBackground("ResultBackground", resultPanel.transform, new Color(0.08f, 0.065f, 0.048f, 0.99f));
+            Stretch(resultBackground.rectTransform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+
+            TMP_Text resultTitle = CreateText("Result Title Text", resultPanel.transform, "K\u1ebeT QU\u1ea2", 32, FontStyles.Bold, TextAlignmentOptions.Center, Gold);
+            AddLayout(resultTitle.gameObject, 0f, 38f, 1f);
+
+            TMP_Text resultChoiceTitle = CreateText("Result Choice Title Text", resultPanel.transform, $"Choice {number}", 24, FontStyles.Bold, TextAlignmentOptions.TopLeft, new Color(0.95f, 0.86f, 0.62f, 1f));
+            resultChoiceTitle.textWrappingMode = TextWrappingModes.Normal;
+            resultChoiceTitle.overflowMode = TextOverflowModes.Ellipsis;
+            AddLayout(resultChoiceTitle.gameObject, 0f, 72f, 1f);
+
+            Image statsBox = CreateImage("Stat Changes Box", resultPanel.transform, new Color(0.055f, 0.06f, 0.058f, 0.92f));
             AddLayout(statsBox.gameObject, 0f, 126f, 1f);
             VerticalLayoutGroup statsLayout = statsBox.gameObject.AddComponent<VerticalLayoutGroup>();
             statsLayout.padding = new RectOffset(12, 12, 8, 8);
@@ -266,13 +307,20 @@ namespace MLN122.VisualNovelEditor
             ChoiceCardUI.StatChangeRow reputation = CreateChoiceStatRow("ReputationChangeRow", statsBox.transform, "Uy t\u00edn", "0", new Color(0.86f, 0.76f, 0.3f, 1f));
             ChoiceCardUI.StatChangeRow investigationRisk = CreateChoiceStatRow("InvestigationRiskChangeRow", statsBox.transform, "Nguy c\u01a1 \u0111i\u1ec1u tra", "0", new Color(0.76f, 0.36f, 0.28f, 1f));
 
-            ChoiceCardUI card = cardImage.gameObject.AddComponent<ChoiceCardUI>();
+            resultPanel.SetActive(false);
+
+            ChoiceCardUI card = cardHitArea.gameObject.AddComponent<ChoiceCardUI>();
             card.Configure(
                 button,
+                canvasGroup,
+                frontPanel,
                 numberText,
                 titleText,
                 descriptionText,
                 illustration,
+                resultPanel,
+                resultTitle,
+                resultChoiceTitle,
                 statsBox.gameObject,
                 capital,
                 marketShare,
@@ -428,6 +476,23 @@ namespace MLN122.VisualNovelEditor
             return panel;
         }
 
+        private static Image CreatePanelBackground(string name, Transform parent, Color color)
+        {
+            Image background = CreateImage(name, parent, color);
+            background.raycastTarget = false;
+            Stretch(background.rectTransform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            background.transform.SetAsFirstSibling();
+
+            Outline outline = background.gameObject.AddComponent<Outline>();
+            outline.effectColor = Gold;
+            outline.effectDistance = new Vector2(2f, -2f);
+
+            LayoutElement layout = background.gameObject.AddComponent<LayoutElement>();
+            layout.ignoreLayout = true;
+
+            return background;
+        }
+
         private static TMP_Text CreateText(string name, Transform parent, string text, int size, FontStyles fontStyle, TextAlignmentOptions alignment, Color color)
         {
             GameObject gameObject = CreateObject(name, parent);
@@ -451,6 +516,10 @@ namespace MLN122.VisualNovelEditor
             colors.pressedColor = new Color(0.58f, 0.34f, 0.14f, 1f);
             colors.selectedColor = colors.highlightedColor;
             button.colors = colors;
+
+            Outline outline = image.gameObject.AddComponent<Outline>();
+            outline.effectColor = Gold;
+            outline.effectDistance = new Vector2(2f, -2f);
 
             TMP_Text labelText = CreateText("Label", image.transform, label, 28, FontStyles.Bold, TextAlignmentOptions.Center, new Color(0.95f, 0.86f, 0.62f, 1f));
             Stretch(labelText.rectTransform, Vector2.zero, Vector2.one, new Vector2(18f, 8f), new Vector2(-18f, -8f));

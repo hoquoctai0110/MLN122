@@ -27,6 +27,7 @@ MonoBehaviour:
   - choiceId: 1885_export_scale
     text: "Th\xE0nh l\u1EADp Trust \u0111\u1EC3 ki\u1EC3m so\xE1t to\xE0n b\u1ED9
       h\u1EC7 th\u1ED1ng"
+    illustration: {fileID: 21300000, guid: 7fe44fe6ba2e8864586e2c856b610e1f, type: 3}
     resultText: 
     statChanges:
       capital: 0
@@ -38,6 +39,7 @@ MonoBehaviour:
     ending: {fileID: 0}
   - choiceId: 1885_quality_brand
     text: "Gi\u1EEF c\xE1c c\xF4ng ty ho\u1EA1t \u0111\u1ED9ng ri\xEAng l\u1EBB"
+    illustration: {fileID: 21300000, guid: 4208dbbb41226ce4f82718e8e9e0a4d5, type: 3}
     resultText: 
     statChanges:
       capital: 0
@@ -49,6 +51,7 @@ MonoBehaviour:
     ending: {fileID: 0}
   - choiceId: 1885_price_war
     text: "B\xE1n b\u1EDBt c\xF4ng ty con"
+    illustration: {fileID: 21300000, guid: 049a6c451a574174a8c6b222a2bf6b09, type: 3}
     resultText: 
     statChanges:
       capital: 15

@@ -26,6 +26,7 @@ MonoBehaviour:
   choices:
   - choiceId: 1874_pipeline_network
     text: "Gi\u1EEF nguy\xEAn quy m\xF4 hi\u1EC7n t\u1EA1i"
+    illustration: {fileID: 21300000, guid: 3825ab2f32f7dd54baaa07a68d9a7eda, type: 3}
     resultText: 
     statChanges:
       capital: 0
@@ -38,6 +39,7 @@ MonoBehaviour:
   - choiceId: 1874_tank_cars
     text: "T\xEDch t\u1EE5 t\u01B0 b\u1EA3n: X\xE2y th\xEAm nh\xE0 m\xE1y, hi\u1EC7n
       \u0111\u1EA1i h\xF3a"
+    illustration: {fileID: 21300000, guid: f97775e5321a64b479fea7c37adb5c86, type: 3}
     resultText: 
     statChanges:
       capital: -15
@@ -50,6 +52,7 @@ MonoBehaviour:
   - choiceId: 1874_share_access
     text: "\u0110\u1EA1i c\xF4ng nghi\u1EC7p: X\xE2y d\u1EF1ng chu\u1ED7i t\u1ED5
       h\u1EE3p nh\xE0 m\xE1y kh\u1ED5ng l\u1ED3"
+    illustration: {fileID: 21300000, guid: f9338a8be5ffe7e45be282e1f38fcffe, type: 3}
     resultText: 
     statChanges:
       capital: -35

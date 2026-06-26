@@ -26,6 +26,7 @@ MonoBehaviour:
   choices:
   - choiceId: 1906_fight
     text: "Mua l\u1EA1i c\xE1c \u0111\u1ED1i th\u1EE7 m\u1EDBi n\u1ED5i"
+    illustration: {fileID: 21300000, guid: fa51c48af99ceda499f75c75ec6fd8f6, type: 3}
     resultText: 
     statChanges:
       capital: -10
@@ -37,6 +38,7 @@ MonoBehaviour:
     ending: {fileID: 0}
   - choiceId: 1906_settle
     text: "C\u1EA1nh tranh b\u1EB1ng \u0111\u1ED5i m\u1EDBi c\xF4ng ngh\u1EC7"
+    illustration: {fileID: 21300000, guid: 5e76fec6effbcea43a5f355a92588834, type: 3}
     resultText: 
     statChanges:
       capital: 0
@@ -48,6 +50,7 @@ MonoBehaviour:
     ending: {fileID: 0}
   - choiceId: 1906_public_relations
     text: "B\u1ECF qua c\xE1c \u0111\u1ED1i th\u1EE7 nh\u1ECF"
+    illustration: {fileID: 21300000, guid: 53ffb34ca4f832d43b698bdecc3841bf, type: 3}
     resultText: 
     statChanges:
       capital: 0

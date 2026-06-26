@@ -27,6 +27,7 @@ MonoBehaviour:
   choices:
   - choiceId: 1863_efficiency
     text: "\u0110\u1EA7u t\u01B0 c\xF4ng ngh\u1EC7 l\u1ECDc d\u1EA7u"
+    illustration: {fileID: 4941998722648637955, guid: 959926f001401854e94ee9f1c66cc666, type: 3}
     resultText: 
     statChanges:
       capital: -15
@@ -38,6 +39,7 @@ MonoBehaviour:
     ending: {fileID: 0}
   - choiceId: 1863_expand_fast
     text: "\u0110\u1EA9y m\u1EA1nh marketing"
+    illustration: {fileID: 21300000, guid: 4ce8f92fd0735fd4095331e797f78495, type: 3}
     resultText: 
     statChanges:
       capital: -5
@@ -49,6 +51,7 @@ MonoBehaviour:
     ending: {fileID: 0}
   - choiceId: 1863_quality
     text: "X\xE2y d\u1EF1ng th\u01B0\u01A1ng hi\u1EC7u"
+    illustration: {fileID: 21300000, guid: 891718ac8d14bf74ea8f528b70cfa189, type: 3}
     resultText: 
     statChanges:
       capital: -10

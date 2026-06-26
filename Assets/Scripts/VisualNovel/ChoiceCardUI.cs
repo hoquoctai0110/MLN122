@@ -140,6 +140,11 @@ namespace MLN122.VisualNovel
             SetText(descriptionText, choiceText);
             SetText(resultChoiceTitleText, choiceText);
             SetText(resultTitleText, "K\u1ebeT QU\u1ea2");
+
+            if (choice.Illustration != null && image != null)
+            {
+                image.sprite = choice.Illustration;
+            }
         }
 
         public void ShowResult()

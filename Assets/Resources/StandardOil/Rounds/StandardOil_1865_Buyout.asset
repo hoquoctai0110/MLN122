@@ -28,6 +28,7 @@ MonoBehaviour:
   - choiceId: 1865_bid_high
     text: "T\xE1i \u0111\u1EA7u t\u01B0 \u0111\u1EC3 m\u1EDF r\u1ED9ng s\u1EA3n xu\u1EA5t
       & mua m\xE1y m\xF3c m\u1EDBi"
+    illustration: {fileID: 21300000, guid: b28226fe0fb96bc47be9c1e1f5b2a737, type: 3}
     resultText: 
     statChanges:
       capital: -15
@@ -39,6 +40,7 @@ MonoBehaviour:
     ending: {fileID: 0}
   - choiceId: 1865_find_backers
     text: "Gi\u1EEF ti\u1EC1n m\u1EB7t l\xE0m qu\u1EF9 d\u1EF1 ph\xF2ng "
+    illustration: {fileID: 21300000, guid: 8a22c3851182034459f0344b35100a50, type: 3}
     resultText: 
     statChanges:
       capital: 5
@@ -50,6 +52,7 @@ MonoBehaviour:
     ending: {fileID: 0}
   - choiceId: 1865_wait
     text: "Chia l\u1EE3i nhu\u1EADn cho c\u1ED5 \u0111\xF4ng "
+    illustration: {fileID: 21300000, guid: 9624f7f28aeee5348969e299cbe5713c, type: 3}
     resultText: 
     statChanges:
       capital: -10

@@ -27,6 +27,7 @@ MonoBehaviour:
   choices:
   - choiceId: 1882_create_trust
     text: "Mua l\u1EA1i c\xE1c \u0111\u1ED1i th\u1EE7 \u0111ang y\u1EBFu"
+    illustration: {fileID: 21300000, guid: 1646b0d8b80977141ac1fc9775d96544, type: 3}
     resultText: 
     statChanges:
       capital: -20
@@ -39,6 +40,7 @@ MonoBehaviour:
   - choiceId: 1882_loose_alliance
     text: "Ti\u1EBFp t\u1EE5c ho\u1EA1t \u0111\u1ED9ng \u0111\u1ED9c l\u1EADp, kh\xF4ng
       th\xE2u t\xF3m"
+    illustration: {fileID: 21300000, guid: 9157adee1b080f94895761fd0ab7d52f, type: 3}
     resultText: 
     statChanges:
       capital: 10
@@ -50,6 +52,7 @@ MonoBehaviour:
     ending: {fileID: 0}
   - choiceId: 1882_transparent_structure
     text: "Chia c\u1ED5 t\u1EE9c cho c\u1ED5 \u0111\xF4ng"
+    illustration: {fileID: 21300000, guid: 9500c4d95ea24914cbcf33b7b98612c6, type: 3}
     resultText: 
     statChanges:
       capital: -15

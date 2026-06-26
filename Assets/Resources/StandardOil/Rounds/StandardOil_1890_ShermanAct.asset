@@ -27,6 +27,7 @@ MonoBehaviour:
   - choiceId: 1890_reorganize
     text: "\xC9p gi\xE1 \u0111\u1EC3 \u0111\u1ED1i th\u1EE7 kh\xF4ng th\u1EC3 c\u1EA1nh
       tranh"
+    illustration: {fileID: 21300000, guid: 9f9482a52c6de884ba0b711d39b830f5, type: 3}
     resultText: 
     statChanges:
       capital: 0
@@ -38,6 +39,7 @@ MonoBehaviour:
     ending: {fileID: 0}
   - choiceId: 1890_lobby
     text: "Duy tr\xEC gi\xE1 \u1ED5n \u0111\u1ECBnh"
+    illustration: {fileID: 21300000, guid: 873cd69bd28850d4fab33881a786894b, type: 3}
     resultText: 
     statChanges:
       capital: 0
@@ -49,6 +51,7 @@ MonoBehaviour:
     ending: {fileID: 0}
   - choiceId: 1890_ignore
     text: "\u0110\u1EA7u t\u01B0 nghi\xEAn c\u1EE9u c\xF4ng ngh\u1EC7 m\u1EDBi"
+    illustration: {fileID: 21300000, guid: db635132d45802842ba50a722fa8727d, type: 3}
     resultText: 
     statChanges:
       capital: 0
